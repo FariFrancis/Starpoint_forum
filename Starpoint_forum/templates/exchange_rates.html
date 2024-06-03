@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rates</title>
+    <style>
+        body {
+            background-color: black;
+            color: blue;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .exchange-rate {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exchange Rates</h1>
+    {% for exchange_rate in exchange_rates %}
+        <div class="exchange-rate">
+            <p><strong>Currency Code:</strong> {{ exchange_rate.currency_code }}</p>
+            <p><strong>Exchange Rate:</strong> {{ exchange_rate.exchange_rate }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

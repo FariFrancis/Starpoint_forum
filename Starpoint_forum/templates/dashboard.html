@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Dashboard</title>
+</head>
+<body>
+  <div>
+    <h1>Welcome to Your Profile</h1>
+    <h2>Logged in as {{ current_user.username }}</h2>
+    <p1> User:{{current_user.username}}  <br>
+         Email:{{current_user.email}} <br>
+    </p1>
+  </div>
+    <p2> This page will show you every thing about your account and is currently in development to be able to insert profile pictures as well as access various different settings for the account. Please come back later for more features.</p2>
+    <br>
+    <p2> Here is a page to post and reply to comments </p2> 
+    <a href="{{ url_for('forum_post')}}">Forum Post </a>
+    <br>
+    <IMG SRC="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmNsandsdWljd2UwYjU0MDVpemhwdHhzOXB4NmRoMno4eGFocXY4ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KouuVwfTuArOWeerLM/giphy.gif">
+
+
+
+
+
+
+
+        <!-- label for="imageUpload"> Select an image:</label>
+        <input type="file" id ="imageUpload" accept ="image/*">
+        <div id="imagePreview"></div>
+
+    <script>
+        const input = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        input.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        imagePreview.innerHTML = '';
+                        imagePreview.appendChild(img);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script> -->
+
+    <h3><a href="/exchange_rates">Exchange Rates</a></h3>
+    <h3><a href="/logout">Logout</a></h3>
+</body>
+</html>

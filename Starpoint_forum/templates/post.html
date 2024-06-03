@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Post.css') }}">
+    <title>Forum - Posts</title>
+</head>
+<body>
+    <h1>Forum - Posts</h1>
+    <form action="/forum_post" method="POST">
+        <textarea name="post_content" placeholder="Write your post here"></textarea>
+        <button type="submit">Post</button>
+    </form>
+
+    {% for post in posts %}
+        <div class="post-box">
+            <p>{{ post.content }}</p>
+            <a href="{{ url_for('reply_to_post', post_id=post.id) }}">Reply</a>
+            {% if post.replies %}
+                <ul>
+                    {% for reply in post.replies %}
+                        <li>{{ reply.content }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <h3><a href="/dashboard">Go back to Dashboard</a></h3>
+    <h3><a href="/logout">Logout</a></h3>
+    <h3><a href="/exchange_rates">Exchange Rates</a></h3>
+</body>
+</html>

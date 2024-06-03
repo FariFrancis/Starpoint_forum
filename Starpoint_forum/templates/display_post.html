@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='Post.css')}}">
+    <title>Display Post</title>
+</head>
+<body>
+
+    <h1>Post</h1>
+    <p>{{ post.content }}</p>
+    {% if post.replies %}
+        <h2>Replies:</h2>
+        <ul>
+            {% for reply in post.replies %}
+                <li>{{ reply.content }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No replies yet.</p>
+    {% endif %}
+    <a href="{{ url_for('reply_to_post', post_id=post.id) }}">Reply to this post</a> <br>
+    <a href="{{url_for('forum_post', post_id=post.id)}}">Go back to forum main page</a>
+</body>
+</html>

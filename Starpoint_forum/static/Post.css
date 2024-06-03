@@ -1,0 +1,30 @@
+body {
+    color: blue; /* Blue text color */
+    background-color: black; /* Black background color */
+    font-family: "Times New Roman", Times, serif; /* 12pt Times New Roman font */
+}
+
+/* Apply styles to the <h1> element within the <body> */
+h1 {
+    font-size: 20px; /* Font size 20 */
+    font-family: Georgia, "Times New Roman", Times, serif; /* Georgia font */
+    color: blue; /* Blue text color */
+    background-color: purple; /* Purple background color */
+}
+.post-box {
+    border: 1px solid gray; /* Add gray border */
+    padding: 10px; /* Add padding */
+    margin-bottom: 10px; /* Add space between post boxes */
+}
+
+.post-box p {
+    margin-bottom: 5px; /* Add space below post content */
+}
+
+.post-box ul {
+    margin-top: 5px; /* Add space above reply list */
+}
+
+.post-box ul li {
+    margin-left: 20px; /* Indent replies */
+}
