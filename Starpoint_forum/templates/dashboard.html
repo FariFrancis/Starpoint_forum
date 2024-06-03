@@ -17,14 +17,9 @@
     <p2> This page will show you every thing about your account and is currently in development to be able to insert profile pictures as well as access various different settings for the account. Please come back later for more features.</p2>
     <br>
     <p2> Here is a page to post and reply to comments </p2> 
-    <a href="{{ url_for('forum_post')}}">Forum Post </a>
+    
     <br>
     <IMG SRC="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmNsandsdWljd2UwYjU0MDVpemhwdHhzOXB4NmRoMno4eGFocXY4ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KouuVwfTuArOWeerLM/giphy.gif">
-
-
-
-
-
 
 
         <!-- label for="imageUpload"> Select an image:</label>
@@ -50,8 +45,9 @@
             }
         });
     </script> -->
-
-    <h2><a href="/exchange_rates">Exchange Rates</a></h2><br>
+    <br>
+    <p><a href="{{ url_for('forum_post')}}">Forum Post </a></p>
+    <p><a href="/exchange_rates">Exchange Rates</a></p><br>
     <h3><a href="/logout">Logout</a></h3>
 </body>
 </html>
