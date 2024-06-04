@@ -12,7 +12,7 @@ h1 {
     background-color: purple; /* Purple background color */
 }
 .post-box {
-    border: 1px solid gray; /* Add gray border */
+    border: 5px solid gray; /* Add gray border */
     padding: 10px; /* Add padding */
     margin-bottom: 10px; /* Add space between post boxes */
 }
@@ -23,6 +23,7 @@ h1 {
 
 .post-box ul {
     margin-top: 5px; /* Add space above reply list */
+    border: 2px solid gray;
 }
 
 .post-box ul li {

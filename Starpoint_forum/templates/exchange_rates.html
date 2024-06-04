@@ -19,6 +19,7 @@
 <body>
     <h1>Exchange Rates</h1>
     {% for exchange_rate in exchange_rates %}
+    <!-- Formats the exchange rate data so that it is in an easy to read form with clear CSS -->
         <div class="exchange-rate">
             <p><strong>Currency Code:</strong> {{ exchange_rate.currency_code }}</p>
             <p><strong>Exchange Rate:</strong> {{ exchange_rate.exchange_rate }}</p>

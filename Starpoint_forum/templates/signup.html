@@ -12,6 +12,7 @@
         {%if signup_sucess %}
             <p>Sign up success!You can now <a href="/login">log in</a>.</p>
         {% else %}
+        <!-- Used for signing users up, contains forms for username, email and password. More data can be added in future, including address and billing information -->
             <form method="post" action="/signup">
                 <label for="username">Username:</label><br>
                 <input type="text" id="username" name="username" required><br>

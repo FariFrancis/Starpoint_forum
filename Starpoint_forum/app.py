@@ -11,60 +11,57 @@ import requests
 
 app = Flask(__name__, static_url_path='/static')
 api = Api(app)
-app.secret_key = 'fire_host'  # Change this to a secret key for security purposes
+app.secret_key = 'fire_host'  # Change this to a different secret key for security purposes
 posts = []
 
 # Configure SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Use SQLite database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Using SQLite database for demonstraion purposes
 app.config['SQLALCHEMYst_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Define User model and create db
+# Define User model and create database, this sets the user, post and reply variables and gives replies a relationship to posts
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
+    posts = db.relationship('Post', backref='author', lazy=True)
+    replies = db.relationship('Reply', backref='author', lazy=True)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     replies = db.relationship('Reply', backref='post', lazy=True)
 
 class Reply(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
-
+#api integration
 exchange_rate = "https://api.exchangerate-api.com/v4/latest/USD"
 api_key = 'a37107f693c4eb8abbed9710'
 
 
 
 
-
-# @app.route('/Api', methods = ['GET', 'POST']) Experimental APi that will be built upon in a different project potentially
-# def Api():
-#   if(request.method == 'GET'):
-#     data = "hello world"
-#     return jsonify({'data': data})
-
-# @app.route('/Api/<int:num>', methods = ['GET'])
-# def disp(num):
-#     return jsonify({'data': num **2})
-
+#Initializes login
 login_manager = LoginManager(app)
 
+#login manager that is used to give information about users
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+#Returns the homepage
 @app.route('/')
 def index():
     return render_template('index.html')
 
+#Login method that is connected to the database, searches and matches password and username, while returning a 404 error if needed
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -79,12 +76,14 @@ def login():
             return render_template('404login.html')
     return render_template('login.html')
 
+#Gives access to a personal user dashboard
 @app.route('/dashboard')
 @login_required
 def dashboard():
     forum_post_href = url_for('forum_post')
     return render_template('dashboard.html', forum_post_href=forum_post_href)
 
+#Logs out users by popping the current session and returning users to the homepage
 @app.route('/logout')
 @login_required
 def logout():
@@ -92,6 +91,7 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('index'))
 
+#Method for signing users up, checks for username, email, password and hashes the password for security purposes
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -138,7 +138,7 @@ def get_exchange_rates():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+#Search method for exchange rates, currently only usable in url with special characters
 @app.route('/search')
 def search_exchange_rate():
     currency_code = request.args.get('currency_code')
@@ -166,10 +166,11 @@ def search_exchange_rate():
       
 #Post functionality, will require user input
 @app.route('/forum_post', methods=['GET', 'POST'])
+@login_required
 def forum_post():
     if request.method == 'POST':
         post_content = request.form['post_content']
-        new_post = Post(content=post_content)
+        new_post = Post(content=post_content, author=current_user)
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('display_post', post_id=new_post.id))
@@ -177,18 +178,18 @@ def forum_post():
         posts = Post.query.all()
     except Exception as e:
         # Handle the exception (e.g., log the error, display a user-friendly message)
-        print(f"An error occurred while retrieving posts: {e}")
         posts = []
     return render_template('post.html', posts=posts)
 
 #Reply to messages
 @app.route('/reply/<int:post_id>', methods=['GET', 'POST'])
+@login_required
 def reply_to_post(post_id):
     if request.method == 'POST':
         # Handle POST request to submit a reply
         post = Post.query.get_or_404(post_id)  # Retrieve the post from the database
         reply_content = request.form['reply_content']
-        new_reply = Reply(content=reply_content, post=post)  # Create a new reply associated with the post
+        new_reply = Reply(content=reply_content, post=post, author=current_user)  # Create a new reply associated with the post
         db.session.add(new_reply)  # Add the new reply to the database
         db.session.commit()  # Commit the transaction
         return redirect(url_for('display_post', post_id=post_id))  # Redirect to the post page after replying
@@ -197,11 +198,13 @@ def reply_to_post(post_id):
         post = Post.query.get_or_404(post_id)  # Retrieve the post from the database
         return render_template('reply.html', post=post, post_id=post_id)  # Render the reply form
 
+#Shows information on specific posts, as well as replies to the post
 @app.route('/post/<int:post_id>')
 def display_post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('display_post.html', post=post, post_id=post_id)
 
+#Used to run the app, for demonstration purposes a db is created, in deployment a new db will not be created each time
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

@@ -9,11 +9,14 @@
 <body>
 
     <h1>Post</h1>
+    <p><strong>{{ post.author.username }}</strong></p>
     <p>{{ post.content }}</p>
+    <!-- Reads replies if a post has any and returns no replies yet if there are none -->
     {% if post.replies %}
         <h2>Replies:</h2>
         <ul>
             {% for reply in post.replies %}
+                <p><strong>{{ reply.author.username }}</strong></p>
                 <li>{{ reply.content }}</li>
             {% endfor %}
         </ul>
